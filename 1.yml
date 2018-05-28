@@ -1,0 +1,30 @@
+- hosts: all
+  roles:
+     - role: dj-wasabi.zabbix-agent
+       agent_server: 18.197.185.224
+       agent_serveractive: 18.197.185.224
+       zabbix_url: http://18.197.185.224/zabbix
+       zabbix_api_use: true
+       zabbix_api_user: Admin
+       zabbix_api_pass: zabbix
+       zabbix_create_host: present
+       zabbix_host_groups:
+         - Linux servers
+       zabbix_link_templates:
+         - Template OS Linux
+       zabbix_macros:
+         - macro_key: apache_type
+           macro_value: reverse_proxy
+
+#     - name: port on
+#       command: sudo ufw allow 10050/tcp  
+  
+  handlers:
+      - name: restart zabbix-agent
+        service:
+            name: zabbix-agent
+            state: restarted
+            enabled: yes
+
+#      - name: port on
+#        command: sudo ufw allow 10050/tcp  
